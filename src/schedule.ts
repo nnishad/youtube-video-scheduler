@@ -32,6 +32,17 @@ const defaultMessageTransport: MessageTransport = {
     userAction: console.log
 }
 
+const today = new Date();
+today.setDate(today.getDate() + 1);
+const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+};
+const formatter = new Intl.DateTimeFormat('en-US', options);
+const byDefaultDate = formatter.format(today);
+
+
 /**
  * import { upload } from 'youtube-videos-uploader'
  * or
@@ -453,7 +464,7 @@ async function uploadVideo(videoJSON: Video, messageTransport: MessageTransport)
         await page.waitForSelector("#schedule-radio-button");
         await page.click("#schedule-radio-button");
 
-        const dateToSelectXPath = "//*[normalize-space(text())='May 29, 2023']";
+        const dateToSelectXPath = `//*[normalize-space(text())='${byDefaultDate}']`;
         await page.waitForXPath(dateToSelectXPath)
         const dateSelector = await page.$x(dateToSelectXPath)
         await (dateSelector[0] as PuppeteerElementHandle).click()
@@ -461,7 +472,7 @@ async function uploadVideo(videoJSON: Video, messageTransport: MessageTransport)
         // Clear the input value
         await (dateInputSelector[0] as PuppeteerElementHandle).click({ clickCount: 3 }); // Select all text
         await dateInputSelector[0].press('Backspace'); // Delete the selected text
-        await dateInputSelector[0].type("May 30, 2023");
+        await dateInputSelector[0].type(videoJSON.scheduleDate);
         await dateInputSelector[0].press('Enter')
 
         const time=await page.waitForSelector("#outer");

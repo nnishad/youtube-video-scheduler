@@ -15,6 +15,7 @@ export interface Video {
     uploadAsDraft?: boolean
     isAgeRestriction?: boolean
     isNotForKid?: boolean
+    scheduleDate?: string
     isChannelMonetized?: boolean
     gameTitleSearch?: string
     gameSelector?: ( arg0: GameData ) => Promise<boolean> | null
