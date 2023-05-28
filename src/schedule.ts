@@ -438,27 +438,42 @@ async function uploadVideo(videoJSON: Video, messageTransport: MessageTransport)
     // click next button
     next = await page.$x(nextBtnXPath)
     await next[0].click()
-    videoJSON.publishType = 'SCHEDULE';
 
     // Get publish button
-    const scheduleXPath =
-        "//*[@id='done-button']"
+   /* const scheduleXPath =
+        "//!*[@id='done-button']"*/
     if (videoJSON.publishType != "SCHEDULE") {
         await page.waitForSelector("#privacy-radios *[name=\""+videoJSON.publishType+"\"]", { visible: true });
 
         await page.waitForTimeout(1000);
 
         await page.click("#privacy-radios *[name=\""+videoJSON.publishType+"\"]");
-
-        // Get publish button
-        const publishXPath =
-            "//*[normalize-space(text())='Publish']/parent::*[not(@disabled)] | //*[normalize-space(text())='Save']/parent::*[not(@disabled)]"
-        await page.waitForXPath(publishXPath)
     }
     else {
         await page.waitForSelector("#schedule-radio-button");
         await page.click("#schedule-radio-button");
+
+        const dateToSelectXPath = "//*[normalize-space(text())='May 29, 2023']";
+        await page.waitForXPath(dateToSelectXPath)
+        const dateSelector = await page.$x(dateToSelectXPath)
+        await (dateSelector[0] as PuppeteerElementHandle).click()
+        const dateInputSelector = await page.$x(dateToSelectXPath)
+        // Clear the input value
+        await (dateInputSelector[0] as PuppeteerElementHandle).click({ clickCount: 3 }); // Select all text
+        await dateInputSelector[0].press('Backspace'); // Delete the selected text
+        await dateInputSelector[0].type("May 30, 2023");
+        await dateInputSelector[0].press('Enter')
+
+        const time=await page.waitForSelector("#outer");
+        await time.click({ clickCount: 3 }); // Select all text
+        await time.press('Backspace'); // Delete the selected text
+        await time.type("4:00 PM");
+        await time.press("Enter")
     }
+    // Get publish button
+    const publishXPath =
+        "//*[normalize-space(text())='Publish']/parent::*[not(@disabled)] | //*[normalize-space(text())='Save']/parent::*[not(@disabled)] | //*[@id='done-button']"
+    await page.waitForXPath(publishXPath)
     // save youtube upload link
     const videoBaseLink = 'https://youtu.be'
     const shortVideoBaseLink = 'https://youtube.com/shorts'
@@ -472,7 +487,7 @@ async function uploadVideo(videoJSON: Video, messageTransport: MessageTransport)
         uploadedLink = await page.evaluate((e) => e.getAttribute('href'), uploadedLinkHandle)
     } while (uploadedLink === videoBaseLink || uploadedLink === shortVideoBaseLink)
 
-    const closeDialogXPath = uploadAsDraft ? saveCloseBtnXPath : scheduleXPath
+    const closeDialogXPath = uploadAsDraft ? saveCloseBtnXPath : publishXPath
     let closeDialog
     for (let i = 0; i < 10; i++) {
         try {
