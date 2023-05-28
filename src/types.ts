@@ -16,6 +16,7 @@ export interface Video {
     isAgeRestriction?: boolean
     isNotForKid?: boolean
     scheduleDate?: string
+    scheduleTime?: string
     isChannelMonetized?: boolean
     gameTitleSearch?: string
     gameSelector?: ( arg0: GameData ) => Promise<boolean> | null

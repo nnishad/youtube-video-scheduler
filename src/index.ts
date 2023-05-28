@@ -33,6 +33,7 @@ const videoObject = {
         console.log('progress', progress)
     },
     scheduleDate: getFormattedDate(5),
+    scheduleTime: "8:00 AM",
     // playlist: "HairStyle Transformation",
     uploadAsDraft: false, isAgeRestriction: false, isNotForKid: true
 }

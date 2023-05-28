@@ -478,7 +478,7 @@ async function uploadVideo(videoJSON: Video, messageTransport: MessageTransport)
         const time=await page.waitForSelector("#outer");
         await time.click({ clickCount: 3 }); // Select all text
         await time.press('Backspace'); // Delete the selected text
-        await time.type("4:00 PM");
+        await time.type(videoJSON.scheduleTime);
         await time.press("Enter")
     }
     // Get publish button
