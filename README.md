@@ -1,4 +1,4 @@
-# YouTube Studio Automation
+# YouTube Studio Video Upload Automation
 
 This repository contains a TypeScript-based automation solution using Puppeteer to schedule video uploads on YouTube Studio. With this automation setup, you can schedule videos seamlessly without being bound by YouTube API quotas. It streamlines the process, saves time, and enhances your content creation workflow.
 
