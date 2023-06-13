@@ -1,6 +1,6 @@
 import {upload} from "./schedule";
 
-const credentials = { email: 'nightowldevelopers@gmail.com', pass: 'Zxcvbnm#123', recoveryemail: 'Your Recovery Email' }
+const credentials = { email: 'email@gmail.com', pass: 'yourpass', recoveryemail: 'Your Recovery Email' }
 
 const getFormattedDate=(nextDays)=>{
     const today = new Date();
